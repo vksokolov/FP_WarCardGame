@@ -13,13 +13,14 @@ namespace WarCardGame
                 .Range(0, Enum.GetNames(typeof(Suit)).Length)
                 .Shuffle()
                 .First();
+            var trumpBasedComparer = new CardComparer(trump);
             
             return deck
                 .Shuffle()
                 .ToImmutableArray()
                 .Split()
                 .AsGameRounds()
-                .Sum(x => x.GetRoundResult(trump))
+                .Sum(x => x.GetRoundResult(trumpBasedComparer))
                 .AsGameResult();
         }
 
@@ -60,7 +61,7 @@ namespace WarCardGame
                 _card1 = card1;
                 _card2 = card2;
             }
-            public int GetRoundResult(Suit trump) => _card1.CompareTo(_card2, trump);
+            public int GetRoundResult(CardComparer comparer) => comparer.Compare(_card1, _card2);
         }
     }
 }
