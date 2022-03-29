@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using LanguageExt;
 
@@ -17,10 +16,14 @@ namespace WarCardGame
 
         private static Arr<Card> CreateDeck()
         {
-            var rankCount = Enum.GetNames(typeof(Rank)).Length;
-            var trumpCount = Enum.GetNames(typeof(Suit)).Length;
-            return Enumerable.Range(0, rankCount * trumpCount)
-                .Select(Card.FromInt)
+            return Enum.GetValues(typeof(Rank))
+                .Cast<Rank>()
+                .SelectMany(r =>
+                {
+                    return Enum.GetValues(typeof(Suit))
+                        .Cast<Suit>()
+                        .Select(s => Card.Create(r, s));
+                })
                 .ToArr();
         }
         private static void PlayMultipleGames(int count)
