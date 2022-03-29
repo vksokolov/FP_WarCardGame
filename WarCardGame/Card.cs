@@ -13,12 +13,9 @@ namespace WarCardGame
             _suit = suit;
         }
 
-        public static Card FromInt(int value)
+        public static Card Create(Rank rank, Suit suit)
         {
-            var totalRanks = Enum.GetNames(typeof(Rank)).Length;
-            Suit t = (Suit) (value / totalRanks);
-            Rank r = (Rank) (value - (int)t * totalRanks);
-            return new Card(r, t);
+            return new Card(rank, suit);
         }
 
         public int CompareTo(Card card2, Suit trump)
